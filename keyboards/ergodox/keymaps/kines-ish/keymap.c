@@ -151,12 +151,13 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         case S_UML:
           return MACRO(T(CAPS), T(S), T(S), END);
         case ALT_TAB:
-          return MACRO(D(RALT), T(TAB), U(RALT), END);
+          return MACRO(D(LCTL), T(T), U(LCTL), T(N), END); //MACRO(D(RALT), T(TAB), U(RALT), END);
 	case ALT_F2:
-	  return MACRO(D(RALT), T(F2), U(RALT), END);
+	  return MACRO(D(LCTL), T(T), U(LCTL), T(C), END); //MACRO(D(RALT), T(F2), U(RALT), END);
         default:
 	  break;
 	}
+    }
     return MACRO_NONE;
 };
 
