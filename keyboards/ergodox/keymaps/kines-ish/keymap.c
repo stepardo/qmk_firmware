@@ -17,9 +17,16 @@ enum macro_id
 	U_UML,
 	O_UML,
 	S_UML,
-        ALT_TAB,
-        UML,
+  ALT_TAB,
+  UML,
 	ALT_F2,
+};
+
+enum {
+  UKEY = 0,
+  OKEY,
+  AKEY,
+  SKEY
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -27,15 +34,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // left hand
         KC_EQL,   KC_1,    KC_2,    KC_3,     KC_4,     KC_5,  M(ALT_F2),
         KC_TAB,   KC_Q,    KC_W,    KC_E,     KC_R,     KC_T,  KC_WWW_BACK,
-        KC_CAPS,  KC_A,    KC_S,    KC_FN1,   KC_FN0,   KC_G,
-        KC_LSFT,  KC_Z,    KC_X,    KC_C,     KC_V,     KC_B,  KC_NO,
+        KC_CAPS,  TD(AKEY),    TD(SKEY),    KC_FN1,   KC_FN0,   KC_G,
+        KC_LSFT,  KC_Z,    KC_X,    KC_C,     KC_V,     KC_B,  TD(UKEY),
         TG(SYMB), KC_GRV,  M(UML),  LT(NUMBERS, KC_LEFT),KC_RIGHT,
                                                CTL_T(KC_ESC),KC_LALT,
                                                              KC_HOME,
                                          CTL_T(KC_BSPC), ALT_T(KC_DEL), KC_END,
         // right hand
         M(ALT_TAB),       KC_6, KC_7,   KC_8,   KC_9,   KC_0,     KC_MINS,
-        KC_WWW_FORWARD,   KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,     KC_BSLS,
+        KC_WWW_FORWARD,   KC_Y,   TD(UKEY),   KC_I,   TD(OKEY),   KC_P,     KC_BSLS,
                   KC_H,   KC_J,   KC_K,   KC_L,   KC_SCLN,  KC_QUOT,
         KC_ESC,   KC_N,   KC_M,   KC_COMM,KC_DOT, KC_SLSH,  KC_RSFT,
                                 KC_DOWN,  KC_UP,KC_LBRC,KC_RBRC,  KC_NO,
@@ -131,6 +138,66 @@ const uint16_t PROGMEM fn_actions[] = {
   [1] = ACTION_LAYER_TAP_KEY(UMLAUTS, KC_D),
 };
 
+
+void dance_ukey(qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count >= 2) {
+    register_code(KC_RALT);
+    register_code(KC_Y);
+    unregister_code(KC_Y);
+    unregister_code(KC_RALT);
+  } else {
+    register_code(KC_U);
+    unregister_code(KC_U);
+  }
+  reset_tap_dance(state);
+}
+
+void dance_okey(qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count >= 2) {
+    register_code(KC_RALT);
+    register_code(KC_P);
+    unregister_code(KC_P);
+    unregister_code(KC_RALT);
+  } else {
+    register_code(KC_O);
+    unregister_code(KC_O);
+  }
+  reset_tap_dance(state);
+}
+
+void dance_akey(qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count >= 2) {
+    register_code(KC_RALT);
+    register_code(KC_Q);
+    unregister_code(KC_Q);
+    unregister_code(KC_RALT);
+  } else {
+    register_code(KC_A);
+    unregister_code(KC_A);
+  }
+  reset_tap_dance(state);
+}
+
+void dance_skey(qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count >= 2) {
+    register_code(KC_RALT);
+    register_code(KC_S);
+    unregister_code(KC_S);
+    unregister_code(KC_RALT);
+  } else {
+    register_code(KC_S);
+    unregister_code(KC_S);
+  }
+  reset_tap_dance(state);
+}
+
+qk_tap_dance_action_t tap_dance_actions[] = {
+  [UKEY] = ACTION_TAP_DANCE_FN(dance_ukey),
+  [OKEY] = ACTION_TAP_DANCE_FN(dance_okey),
+  [AKEY] = ACTION_TAP_DANCE_FN(dance_akey),
+  [SKEY] = ACTION_TAP_DANCE_FN(dance_skey),
+};
+
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
   if (!record) // prevent zero pointer accesses
@@ -141,7 +208,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
       switch(id)
         {
         case UML: // prefix key, needs to be followed by u, a or o
-          return MACRO( T(CAPS), D(LSFT), T(QUOT), U(LSFT), END);
+          return MACRO(T(CAPS), D(LSFT), T(QUOT), U(LSFT), END);
         case A_UML:
           return MACRO(T(CAPS), D(LSFT), T(QUOT), U(LSFT), T(A), END);
         case U_UML:
