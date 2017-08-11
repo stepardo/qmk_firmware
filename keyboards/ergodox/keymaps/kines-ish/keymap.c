@@ -3,26 +3,22 @@
 #include "action_layer.h"
 
 enum Layer
-  {
-    BASE = 0,
-    MOUSE,
-    UMLAUTS,
-    SYMB,
-    NUMBERS,
-  };
+{
+  BASE = 0,
+  MOUSE,
+  SYMB,
+  NUMBERS,
+};
 
 enum macro_id
 {
-	A_UML,
-	U_UML,
-	O_UML,
-	S_UML,
-  ALT_TAB,
+  ALT_TAB = 0,
   UML,
 	ALT_F2,
 };
 
-enum {
+enum tap_dances
+{
   UKEY = 0,
   OKEY,
   AKEY,
@@ -34,7 +30,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // left hand
         KC_EQL,   KC_1,    KC_2,    KC_3,     KC_4,     KC_5,  M(ALT_F2),
         KC_TAB,   KC_Q,    KC_W,    KC_E,     KC_R,     KC_T,  KC_WWW_BACK,
-        KC_CAPS,  TD(AKEY),    TD(SKEY),    KC_FN1,   KC_FN0,   KC_G,
+        KC_CAPS,  TD(AKEY),    TD(SKEY),      KC_D,   KC_FN0,   KC_G,
         KC_LSFT,  KC_Z,    KC_X,    KC_C,     KC_V,     KC_B,  TD(UKEY),
         TG(SYMB), KC_GRV,  M(UML),  LT(NUMBERS, KC_LEFT),KC_RIGHT,
                                                CTL_T(KC_ESC),KC_LALT,
@@ -111,31 +107,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_NO,
        KC_BTN3, KC_BTN2, KC_BTN1
 ),
-[UMLAUTS] = KEYMAP(
-       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-       KC_NO,   M(A_UML),M(S_UML),KC_TRNS, KC_NO,   KC_NO,
-       KC_TRNS, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-                                           KC_NO,   KC_NO,
-                                                    KC_NO,
-                                  KC_NO,   KC_NO,   KC_NO,
-    // right hand
-       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-       KC_NO,   KC_NO,   M(U_UML),KC_NO,   M(O_UML),KC_NO,   KC_NO,
-                KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_TRNS,
-                         KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-       KC_NO,   KC_NO,
-       KC_NO,
-       KC_NO,   KC_NO,   KC_NO
-),
 };
 
 const uint16_t PROGMEM fn_actions[] = {
   [0] = ACTION_LAYER_TAP_KEY(MOUSE, KC_F), // momentarily switch to layer if
                                            // pressed long
-  [1] = ACTION_LAYER_TAP_KEY(UMLAUTS, KC_D),
 };
 
 
@@ -209,18 +185,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
         {
         case UML: // prefix key, needs to be followed by u, a or o
           return MACRO(T(CAPS), D(LSFT), T(QUOT), U(LSFT), END);
-        case A_UML:
-          return MACRO(T(CAPS), D(LSFT), T(QUOT), U(LSFT), T(A), END);
-        case U_UML:
-          return MACRO(T(CAPS), D(LSFT), T(QUOT), U(LSFT), T(U), END);
-        case O_UML:
-          return MACRO(T(CAPS), D(LSFT), T(QUOT), U(LSFT), T(O), END);
-        case S_UML:
-          return MACRO(T(CAPS), T(S), T(S), END);
         case ALT_TAB:
           return MACRO(D(LCTL), T(T), U(LCTL), T(N), END); //MACRO(D(RALT), T(TAB), U(RALT), END);
-	case ALT_F2:
-	  return MACRO(D(LCTL), T(T), U(LCTL), T(C), END); //MACRO(D(RALT), T(F2), U(RALT), END);
+        case ALT_F2:
+          return MACRO(D(LCTL), T(T), U(LCTL), T(C), END); //MACRO(D(RALT), T(F2), U(RALT), END);
         default:
 	  break;
 	}
@@ -249,9 +217,6 @@ void matrix_scan_user(void) {
         break;
       case MOUSE:
         ergodox_right_led_1_on();
-        break;
-      case UMLAUTS:
-        ergodox_right_led_2_on();
         break;
       default:
         // none
