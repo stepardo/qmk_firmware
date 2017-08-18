@@ -2,6 +2,8 @@
 #include "debug.h"
 #include "action_layer.h"
 
+#define TAPPING_TERM 200
+
 enum Layer
 {
   BASE = 0,
@@ -17,34 +19,26 @@ enum macro_id
 	ALT_F2,
 };
 
-enum tap_dances
-{
-  UKEY = 0,
-  OKEY,
-  AKEY,
-  SKEY
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [BASE] = KEYMAP(  // layer 0 : default
-        // left hand
-        KC_EQL,   KC_1,    KC_2,    KC_3,     KC_4,     KC_5,  M(ALT_F2),
-        KC_TAB,   KC_Q,    KC_W,    KC_E,     KC_R,     KC_T,  KC_WWW_BACK,
-        KC_CAPS,  TD(AKEY),    TD(SKEY),      KC_D,   KC_FN0,   KC_G,
-        KC_LSFT,  KC_Z,    KC_X,    KC_C,     KC_V,     KC_B,  TD(UKEY),
-        TG(SYMB), KC_GRV,  M(UML),  LT(NUMBERS, KC_LEFT),KC_RIGHT,
-                                               CTL_T(KC_ESC),KC_LALT,
-                                                             KC_HOME,
-                                         CTL_T(KC_BSPC), ALT_T(KC_DEL), KC_END,
-        // right hand
-        M(ALT_TAB),       KC_6, KC_7,   KC_8,   KC_9,   KC_0,     KC_MINS,
-        KC_WWW_FORWARD,   KC_Y,   TD(UKEY),   KC_I,   TD(OKEY),   KC_P,     KC_BSLS,
-                  KC_H,   KC_J,   KC_K,   KC_L,   KC_SCLN,  KC_QUOT,
-        KC_ESC,   KC_N,   KC_M,   KC_COMM,KC_DOT, KC_SLSH,  KC_RSFT,
-                                KC_DOWN,  KC_UP,KC_LBRC,KC_RBRC,  KC_NO,
-        KC_LALT,  CTL_T(KC_ESC),
-        KC_PGUP,
-        KC_PGDN,  ALT_T(KC_ENT), CTL_T(KC_SPC)
+    // left hand
+    KC_EQL,   KC_1,    KC_2,    KC_3,     KC_4,     KC_5,  M(ALT_F2),
+    KC_TAB,   KC_Q,    KC_W,    KC_E,     KC_R,     KC_T,  KC_WWW_BACK,
+    KC_CAPS,  TD(AKEY),    TD(SKEY),      KC_D,   KC_FN0,   KC_G,
+    KC_LSFT,  KC_Z,    KC_X,    KC_C,     KC_V,     KC_B,  TD(UKEY),
+    TG(SYMB), KC_GRV,  M(UML),  LT(NUMBERS, KC_LEFT),KC_RIGHT,
+    CTL_T(KC_ESC),KC_LALT,
+    KC_HOME,
+    CTL_T(KC_BSPC), ALT_T(KC_DEL), KC_END,
+    // right hand
+    M(ALT_TAB),       KC_6, KC_7,   KC_8,   KC_9,   KC_0,     KC_MINS,
+    KC_WWW_FORWARD,   KC_Y,   TD(UKEY),   KC_I,   TD(OKEY),   KC_P,     KC_BSLS,
+    KC_H,   KC_J,   KC_K,   KC_L,   KC_SCLN,  KC_QUOT,
+    KC_ESC,   KC_N,   KC_M,   KC_COMM,KC_DOT, KC_SLSH,  KC_RSFT,
+    KC_DOWN,  KC_UP,KC_LBRC,KC_RBRC,  KC_NO,
+    KC_LALT,  CTL_T(KC_ESC),
+    KC_PGUP,
+    KC_PGDN,  ALT_T(KC_ENT), CTL_T(KC_SPC)
     ),
 // Symbols layer, almost unused...
 [SYMB] = KEYMAP(
@@ -114,65 +108,6 @@ const uint16_t PROGMEM fn_actions[] = {
                                            // pressed long
 };
 
-
-void dance_ukey(qk_tap_dance_state_t *state, void *user_data) {
-  if (state->count >= 2) {
-    register_code(KC_RALT);
-    register_code(KC_Y);
-    unregister_code(KC_Y);
-    unregister_code(KC_RALT);
-  } else {
-    register_code(KC_U);
-    unregister_code(KC_U);
-  }
-  reset_tap_dance(state);
-}
-
-void dance_okey(qk_tap_dance_state_t *state, void *user_data) {
-  if (state->count >= 2) {
-    register_code(KC_RALT);
-    register_code(KC_P);
-    unregister_code(KC_P);
-    unregister_code(KC_RALT);
-  } else {
-    register_code(KC_O);
-    unregister_code(KC_O);
-  }
-  reset_tap_dance(state);
-}
-
-void dance_akey(qk_tap_dance_state_t *state, void *user_data) {
-  if (state->count >= 2) {
-    register_code(KC_RALT);
-    register_code(KC_Q);
-    unregister_code(KC_Q);
-    unregister_code(KC_RALT);
-  } else {
-    register_code(KC_A);
-    unregister_code(KC_A);
-  }
-  reset_tap_dance(state);
-}
-
-void dance_skey(qk_tap_dance_state_t *state, void *user_data) {
-  if (state->count >= 2) {
-    register_code(KC_RALT);
-    register_code(KC_S);
-    unregister_code(KC_S);
-    unregister_code(KC_RALT);
-  } else {
-    register_code(KC_S);
-    unregister_code(KC_S);
-  }
-  reset_tap_dance(state);
-}
-
-qk_tap_dance_action_t tap_dance_actions[] = {
-  [UKEY] = ACTION_TAP_DANCE_FN(dance_ukey),
-  [OKEY] = ACTION_TAP_DANCE_FN(dance_okey),
-  [AKEY] = ACTION_TAP_DANCE_FN(dance_akey),
-  [SKEY] = ACTION_TAP_DANCE_FN(dance_skey),
-};
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
 {
