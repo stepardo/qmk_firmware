@@ -27,7 +27,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_CAPS,  TD(AKEY),    TD(SKEY),      KC_D,   KC_FN0,   KC_G,
     KC_LSFT,  KC_Z,    KC_X,    KC_C,     KC_V,     KC_B,  TD(UKEY),
     TG(SYMB), KC_GRV,  M(UML),  LT(NUMBERS, KC_LEFT),KC_RIGHT,
-    CTL_T(KC_ESC),KC_LALT,
+    CTL_T(KC_ESC), KC_LALT,
     KC_HOME,
     CTL_T(KC_BSPC), ALT_T(KC_DEL), KC_END,
     // right hand
@@ -36,9 +36,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_H,   KC_J,   KC_K,   KC_L,   KC_SCLN,  KC_QUOT,
     KC_ESC,   KC_N,   KC_M,   KC_COMM,KC_DOT, KC_SLSH,  KC_RSFT,
     KC_DOWN,  KC_UP,KC_LBRC,KC_RBRC,  KC_NO,
-    KC_LALT,  CTL_T(KC_ESC),
+    KC_RALT,  CTL_T(KC_ESC),
     KC_PGUP,
-    KC_PGDN,  ALT_T(KC_ENT), CTL_T(KC_SPC)
+    KC_PGDN,  RALT_T(KC_ENT), CTL_T(KC_SPC)
     ),
 // Symbols layer, almost unused...
 [SYMB] = KEYMAP(
