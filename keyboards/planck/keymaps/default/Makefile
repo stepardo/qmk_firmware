@@ -1,5 +1,7 @@
 MOUSEKEY_ENABLE = yes
+AUDIO_ENABLE = yes
+FAUXCLICKY_ENABLE = no
 COMMAND_ENABLE = no
 ifndef QUANTUM_DIR
-	include ../../../../Makefile
+include ../../../../Makefile
 endif
