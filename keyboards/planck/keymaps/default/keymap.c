@@ -17,12 +17,6 @@
 #include "planck.h"
 #include "action_layer.h"
 
-#ifdef FAUXCLICKY_ENABLE
-float fauxclicky_pressed_note[2] = MUSICAL_NOTE(_D4, 0.25);
-float fauxclicky_released_note[2] = MUSICAL_NOTE(_C4, 0.125);
-float fauxclicky_beep_note[2] = MUSICAL_NOTE(_C4, 0.25);
-#endif
-
 extern keymap_config_t keymap_config;
 #define M_XO M(0) // emacs switch window
 #define M_XB M(1) // emacs switch buffer
@@ -42,7 +36,6 @@ enum planck_keycodes {
   QWERTY = SAFE_RANGE,
   LOWER,
   RAISE,
-  BACKLIT,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -143,11 +136,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-#ifdef AUDIO_ENABLE
-  float plover_song[][2]     = SONG(PLOVER_SOUND);
-  float plover_gb_song[][2]  = SONG(PLOVER_GOODBYE_SOUND);
-#endif
-
 const uint16_t PROGMEM fn_actions[] = {
   [0] = ACTION_LAYER_TAP_KEY(_MOUSE, KC_F),      // momentarily switch to layer if
   [1] = ACTION_LAYER_TAP_KEY(_DIRECTIONS, KC_D), // pressed long pressed long
@@ -194,19 +182,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       } else {
         layer_off(_RAISE);
         update_tri_layer(_LOWER, _RAISE, _ADJUST);
-      }
-      return false;
-      break;
-    case BACKLIT:
-      if (record->event.pressed) {
-        register_code(KC_RSFT);
-        #ifdef BACKLIGHT_ENABLE
-          backlight_step();
-        #endif
-        PORTE &= ~(1<<6);
-      } else {
-        unregister_code(KC_RSFT);
-        PORTE |= (1<<6);
       }
       return false;
       break;

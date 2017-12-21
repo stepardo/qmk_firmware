@@ -1,6 +1,11 @@
 MOUSEKEY_ENABLE = yes
 AUDIO_ENABLE = yes
 FAUXCLICKY_ENABLE = no
+COMMAND_ENABLE = no
+CONSOLE_ENABLE = no
+SERIAL_ENABLE = no
+MIDI_ENABLE = no
+BACKLIGHT_ENABLE = no
 ifndef QUANTUM_DIR
 	include ../../../../Makefile
 endif
