@@ -18,15 +18,12 @@
 #include "action_layer.h"
 
 extern keymap_config_t keymap_config;
-#define M_XO M(0) // emacs switch window
-#define M_XB M(1) // emacs switch buffer
-#define M_AT M(2) // alt-tab
-
 enum planck_layers {
   _QWERTY,
   _MOUSE,
   _DIRECTIONS,
   _BRACKETS,
+  _EMACS,
   _LOWER,
   _RAISE,
   _ADJUST
@@ -37,6 +34,19 @@ enum planck_keycodes {
   LOWER,
   RAISE,
 };
+
+enum macros {
+  M_EMACS_LEFT  = 3,
+  M_EMACS_RIGHT = 4,
+  M_EMACS_OTHER = 5,
+};
+
+#define M_XO M(0) // emacs switch window
+#define M_XB M(1) // emacs switch buffer
+#define M_AT M(2) // alt-tab
+#define M_E_L M(M_EMACS_LEFT)
+#define M_E_R M(M_EMACS_RIGHT)
+#define M_E_O M(M_EMACS_OTHER)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -53,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_QWERTY] = {
   {KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,           KC_Y,          KC_U,    KC_I,     KC_O,    KC_P,    KC_MINS},
-  {KC_ESC,  KC_A,    KC_S,    KC_FN1,  KC_FN0,  KC_G,           KC_H,          KC_FN2,  KC_K,     KC_L,    KC_SCLN, KC_QUOT},
+  {KC_ESC,  KC_A,    KC_FN3,  KC_FN1,  KC_FN0,  KC_G,           KC_H,          KC_FN2,  KC_K,     KC_L,    KC_SCLN, KC_QUOT},
   {KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,           KC_N,          KC_M,    KC_COMM,  KC_DOT,  KC_SLSH, KC_RSFT },
   {M_AT,    KC_LCTL, KC_LALT, KC_LGUI, LOWER,   ALT_T(KC_BSPC), CTL_T(KC_SPC), RAISE,   KC_RALT,  KC_DOWN, M_XB,    M_XO}
 },
@@ -77,6 +87,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   {KC_TRNS, KC_TRNS, KC_TRNS, KC_DEL,  KC_LCBR, KC_RCBR, KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS, KC_MUTE},
   {KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LBRC, KC_RBRC, KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS, KC_VOLU},
   {KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS, KC_VOLD}
+},
+
+[_EMACS] = {
+  {KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MPLY},
+  {KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, M_E_L,   M_E_O,   M_E_O,   M_E_R,   KC_TRNS, KC_MUTE},
+  {KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_VOLU},
+  {KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_VOLD}
 },
 
 /* Lower
@@ -140,6 +157,7 @@ const uint16_t PROGMEM fn_actions[] = {
   [0] = ACTION_LAYER_TAP_KEY(_MOUSE, KC_F),      // momentarily switch to layer if
   [1] = ACTION_LAYER_TAP_KEY(_DIRECTIONS, KC_D), // pressed long pressed long
   [2] = ACTION_LAYER_TAP_KEY(_BRACKETS, KC_J),
+  [3] = ACTION_LAYER_TAP_KEY(_EMACS, KC_S),
 };
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
@@ -151,6 +169,12 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
       return MACRO(D(LCTL), T(X), U(LCTL), T(B), END);
     case 2:
       return MACRO(D(LALT), T(TAB), U(LALT), END);
+    case M_EMACS_LEFT:
+      return MACRO(D(LCTL), T(X), U(LCTL), T(LEFT), END);
+    case M_EMACS_RIGHT:
+      return MACRO(D(LCTL), T(X), U(LCTL), T(RIGHT), END);
+    case M_EMACS_OTHER:
+      return MACRO(D(LCTL), T(X), U(LCTL), T(O), END);
     }
   }
   return MACRO_NONE;
