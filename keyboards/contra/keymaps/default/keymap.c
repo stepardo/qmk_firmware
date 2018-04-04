@@ -61,11 +61,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | Brite| Ctrl | Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  */
+#define O_LSFT  OSM(MOD_LSFT)
+#define O_RSFT  OSM(MOD_RSFT)
+#define O_RALT  OSM(MOD_RALT)
+#define AT_BSPC ALT_T(KC_BSPC)
+#define CT_SPC  CTL_T(KC_SPC)
+  
 [_QWERTY] = {
-  {KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,           KC_Y,          KC_U,    KC_I,     KC_O,    KC_P,    KC_MINS},
-  {KC_ESC,  KC_A,    KC_FN3,  KC_FN1,  KC_FN0,  KC_G,           KC_H,          KC_FN2,  KC_K,     KC_L,    KC_SCLN, KC_QUOT},
-  {KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,           KC_N,          KC_M,    KC_COMM,  KC_DOT,  KC_SLSH, KC_RSFT },
-  {M_AT,    KC_LCTL, KC_LALT, KC_LGUI, LOWER,   ALT_T(KC_BSPC), CTL_T(KC_SPC), RAISE,   KC_RALT,  KC_DOWN, M_XB,    M_XO}
+  {KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,     KC_Y,    KC_U,    KC_I,     KC_O,    KC_P,    KC_MINS},
+  {KC_ESC,  KC_A,    KC_FN3,  KC_FN1,  KC_FN0,  KC_G,     KC_H,    KC_FN2,  KC_K,     KC_L,    KC_SCLN, KC_QUOT},
+  {O_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,     KC_N,    KC_M,    KC_COMM,  KC_DOT,  KC_SLSH, O_RSFT },
+  {M_AT,    KC_LCTL, KC_LALT, KC_LGUI, LOWER,   AT_BSPC,  CT_SPC,  RAISE,   O_RALT,   KC_DOWN, M_XB,    M_XO}
 },
 
 [_MOUSE] = {
