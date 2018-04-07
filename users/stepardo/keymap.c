@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #define O_RALT  OSM(MOD_RALT)
 #define AT_BSPC ALT_T(KC_BSPC)
 #define CT_SPC  CTL_T(KC_SPC)
- 
+
 [_QWERTY] = {
   {KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,     KC_Y,    KC_U,    KC_I,     KC_O,    KC_P,    KC_MINS},
   {KC_ESC,  KC_A,    KC_FN3,  KC_FN1,  KC_FN0,  KC_G,     KC_H,    KC_FN2,  KC_K,     KC_L,    KC_SCLN, KC_QUOT},
@@ -97,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_EMACS] = {
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MPLY},
-  {_______, _______, _______, _______, _______, _______, M_E_L,   _______, _______, M_E_R,   _______, KC_MUTE},
+  {_______, _______, _______, _______, _______, _______, M_E_L,   M_E_O,   M_E_O,   M_E_R,   _______, KC_MUTE},
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLU},
   {_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_VOLD}
 },
