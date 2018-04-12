@@ -68,10 +68,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #define CT_SPC  CTL_T(KC_SPC)
 
 [_QWERTY] = {
-  {KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,     KC_Y,    KC_U,    KC_I,     KC_O,    KC_P,    KC_MINS},
-  {KC_ESC,  KC_A,    KC_FN3,  KC_FN1,  KC_FN0,  KC_G,     KC_H,    KC_FN2,  KC_K,     KC_L,    KC_SCLN, KC_QUOT},
-  {O_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,     KC_N,    KC_M,    KC_COMM,  KC_DOT,  KC_SLSH, O_RSFT },
-  {M_AT,    KC_LCTL, KC_LALT, KC_LGUI, LOWER,   AT_BSPC,  CT_SPC,  RAISE,   O_RALT,   KC_DOWN, M_XB,    M_XO}
+  {KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,       KC_T,     KC_Y,    KC_U,       KC_I,     KC_O,    KC_P,    KC_MINS},
+  {KC_ESC,  KC_A,    KC_FN3,  KC_FN1,  KC_FN0,     KC_G,     KC_H,    KC_FN2,     KC_K,     KC_L,    KC_SCLN, KC_QUOT},
+  {O_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,       KC_B,     KC_N,    KC_M,       KC_COMM,  KC_DOT,  KC_SLSH, O_RSFT },
+  {M_AT,    KC_LCTL, KC_LALT, KC_LGUI, OSL(_LOWER),AT_BSPC,  CT_SPC, OSL(_RAISE), O_RALT,   KC_DOWN, M_XB,    M_XO}
 },
 
 [_MOUSE] = {
