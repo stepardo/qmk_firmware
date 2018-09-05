@@ -48,8 +48,8 @@ enum macros {
 #define M_E_R M(M_EMACS_RIGHT)
 #define M_E_O M(M_EMACS_OTHER)
 
-const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
+{
 /* Qwerty
  * ,-----------------------------------------------------------------------------------.
  * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Bksp |
@@ -64,14 +64,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #define O_LSFT  OSM(MOD_LSFT)
 #define O_RSFT  OSM(MOD_RSFT)
 #define O_RALT  OSM(MOD_RALT)
-#define AT_BSPC ALT_T(KC_BSPC)
-#define CT_SPC  CTL_T(KC_SPC)
+//#define AT_BSPC ALT_T(KC_BSPC)
+//#define CT_SPC  CTL_T(KC_SPC)
+#define AT_BSPC KC_BSPC
+#define CT_SPC  KC_SPC
 
-[_QWERTY] = {
-  {KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,       KC_T,     KC_Y,    KC_U,       KC_I,     KC_O,    KC_P,    KC_MINS},
-  {KC_ESC,  KC_A,    KC_FN3,  KC_FN1,  KC_FN0,     KC_G,     KC_H,    KC_FN2,     KC_K,     KC_L,    KC_SCLN, KC_QUOT},
+[_QWERTY] =
+{
+  {CTL_T(KC_TAB),  KC_Q,    KC_W,    KC_E,    KC_R,       KC_T,     KC_Y,    KC_U,       KC_I,     KC_O,    KC_P, CTL_T(KC_MINS)},
+  {ALT_T(KC_ESC),  KC_A,    KC_FN3,  KC_FN1,  KC_FN0,     KC_G,     KC_H,    KC_FN2,     KC_K,     KC_L,    KC_SCLN, ALT_T(KC_QUOT)},
   {O_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,       KC_B,     KC_N,    KC_M,       KC_COMM,  KC_DOT,  KC_SLSH, O_RSFT },
-  {M_AT,    KC_LCTL, KC_LALT, KC_LGUI, OSL(_LOWER),AT_BSPC,  CT_SPC, OSL(_RAISE), O_RALT,   KC_DOWN, M_XB,    M_XO}
+  {KC_LALT, KC_LCTL, KC_LALT, KC_LGUI, OSL(_LOWER),AT_BSPC,  CT_SPC, OSL(_RAISE), O_RALT,   KC_DOWN, M_XB,    KC_LCTL}
 },
 
 [_MOUSE] = {
@@ -197,20 +200,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case LOWER:
       if (record->event.pressed) {
-        layer_on(_LOWER);
+        set_oneshot_layer(_LOWER, ONESHOT_START); // layer_on
         update_tri_layer(_LOWER, _RAISE, _ADJUST);
       } else {
-        layer_off(_LOWER);
+        set_oneshot_layer(_LOWER, ONESHOT_PRESSED); // layer_off
         update_tri_layer(_LOWER, _RAISE, _ADJUST);
       }
       return false;
       break;
     case RAISE:
       if (record->event.pressed) {
-        layer_on(_RAISE);
+        set_oneshot_layer(_RAISE, ONESHOT_START);
         update_tri_layer(_LOWER, _RAISE, _ADJUST);
       } else {
-        layer_off(_RAISE);
+        set_oneshot_layer(_RAISE, ONESHOT_PRESSED);
         update_tri_layer(_LOWER, _RAISE, _ADJUST);
       }
       return false;
