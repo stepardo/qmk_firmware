@@ -39,6 +39,7 @@ enum macros {
   M_EMACS_LEFT  = 3,
   M_EMACS_RIGHT = 4,
   M_EMACS_OTHER = 5,
+  REBOOT        = 6,
 };
 
 #define M_XO M(0) // emacs switch window
@@ -47,6 +48,7 @@ enum macros {
 #define M_E_L M(M_EMACS_LEFT)
 #define M_E_R M(M_EMACS_RIGHT)
 #define M_E_O M(M_EMACS_OTHER)
+#define REBOOT_ M(REBOOT)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
 {
@@ -74,14 +76,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
   {CTL_T(KC_TAB),  KC_Q,    KC_W,    KC_E,    KC_R,       KC_T,     KC_Y,    KC_U,       KC_I,     KC_O,    KC_P, CTL_T(KC_MINS)},
   {ALT_T(KC_ESC),  KC_A,    KC_FN3,  KC_FN1,  KC_FN0,     KC_G,     KC_H,    KC_FN2,     KC_K,     KC_L,    KC_SCLN, ALT_T(KC_QUOT)},
   {O_LSFT,  KC_Z,    KC_X,    KC_C,    KC_V,       KC_B,     KC_N,    KC_M,       KC_COMM,  KC_DOT,  KC_SLSH, O_RSFT },
-  {KC_LALT, KC_LCTL, KC_LALT, KC_LGUI, OSL(_LOWER),AT_BSPC,  CT_SPC, OSL(_RAISE), O_RALT,   KC_DOWN, M_XB,    KC_LCTL}
+  {KC_BTN1, KC_BTN2, KC_BTN3, KC_LGUI, OSL(_LOWER),AT_BSPC,  CT_SPC, OSL(_RAISE), O_RALT,   KC_DOWN, M_XB,    KC_LCTL}
 },
 
 [_MOUSE] = {
   {_______, _______, _______, _______, _______,     _______, KC_WH_L, KC_WH_D,        KC_WH_U, KC_WH_R,  _______, _______},
   {_______, _______, _______, _______, _______,     _______, KC_MS_L, KC_MS_D,        KC_MS_U, KC_MS_R,  _______, _______},
   {_______, _______, _______, _______, _______,     _______, _______, _______,        _______, _______,  _______, _______},
-  {_______, _______, _______, _______, KC_WWW_BACK, KC_BTN1, KC_BTN2, KC_WWW_FORWARD, _______, _______,  _______, _______}
+  {_______, _______, _______, _______, KC_WWW_BACK, KC_BTN1, KC_BTN2, KC_WWW_FORWARD, _______, _______,  _______, REBOOT_}
 },
 
 [_DIRECTIONS] = {
@@ -117,9 +119,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = {
-  {KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR,    KC_ASTR,    KC_LPRN, KC_RPRN, _______},
+  {KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR,    KC_ASTR,    KC_LPRN, KC_RPRN, KC_ENTER},
   {KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_PLUS,    KC_EQL,     KC_LCBR, KC_RCBR, KC_PIPE},
-  {KC_HOME, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_ENT,  S(KC_NUHS), S(KC_NUBS), _______, _______, KC_END},
+  {KC_HOME, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  S(KC_NUHS), S(KC_NUBS), _______, _______, KC_END},
   {_______, _______, _______, _______, _______, _______, _______, _______,    _______,    _______, _______, _______}
 },
 
@@ -136,7 +138,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] =
  */
 [_RAISE] = {
   {KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_TRNS},
-  {KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_PLUS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS},
+  {KC_DEL,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,  KC_PLUS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS},
   {_______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_DEL,  KC_F12,  KC_NUHS, KC_NUBS, KC_PGDN, KC_PGUP, _______},
   {_______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______}
 },
@@ -184,6 +186,8 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
       return MACRO(D(LCTL), T(X), U(LCTL), T(RIGHT), END);
     case M_EMACS_OTHER:
       return MACRO(D(LCTL), T(X), U(LCTL), T(O), END);
+    case REBOOT:
+      return MACRO(D(LCTL), D(LALT), D(DEL), U(DEL), U(LALT), U(LCTL), END);
     }
   }
   return MACRO_NONE;
